@@ -1,0 +1,7 @@
+const screens=[['dashboard','Dashboard'],['manage_accounts','Manage Accounts'],['adventures_log','Adventurer’s Log'],['account_builder','Account Builder'],['calculator_hub','Calculator Hub'],['guides','Guides'],['grand_exchange','Grand Exchange'],['settings','Settings'],['skills_calculator','Skills Calculator'],['shipbuilder','Shipbuilder']];
+let current=0,playing=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+const picture=document.querySelector('#demo'),caption=document.querySelector('#caption'),play=document.querySelector('#play'),tabs=document.querySelector('#tabs');
+const buttons=screens.map(([key,name],i)=>{const b=document.createElement('button');b.textContent=name;b.type='button';b.addEventListener('click',()=>{show(i);restart()});tabs.append(b);return b});
+function show(i){current=(i+screens.length)%screens.length;const [key,name]=screens[current];picture.src=`assets/demo/${key}.png`;picture.alt=`${name} — Turtleland database demo`;caption.textContent=`${current+1} / ${screens.length} · ${name}`;buttons.forEach((b,n)=>b.setAttribute('aria-pressed',String(n===current)))}
+let timer;function restart(){clearInterval(timer);play.textContent=playing?'Pause slideshow':'Play slideshow';if(playing)timer=setInterval(()=>{if(!document.hidden)show(current+1)},6000)}
+play.addEventListener('click',()=>{playing=!playing;restart()});document.querySelector('#previous').addEventListener('click',()=>{show(current-1);restart()});document.querySelector('#next').addEventListener('click',()=>{show(current+1);restart()});show(0);restart();
